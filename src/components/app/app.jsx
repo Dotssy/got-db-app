@@ -1,32 +1,51 @@
-import React from 'react';
+import React, {Component} from 'react';
 import { Col, Row, Container } from 'reactstrap';
+import styled from 'styled-components';
 
 import Header from '../header/header';
-import CharDetails from '../char-details/char-details';
-import ItemList from '../item-list/item-list';
 import RandomChar from '../random-char/random-char';
+import CharacterPage from '../character-page/character-page';
+import ErrorMsg from '../error-msg/error-msg';
 
-const App = () => {
-	return (
-		<>
-			<Container>
-				<Header />
-				<Row>
-					<Col lg={{ size: 5, offset: 4 }}>
-						<RandomChar />
-					</Col>
-				</Row>
-				<Row>
-					<Col md='6'>
-						<ItemList />
-					</Col>
-					<Col md='6'>
-						<CharDetails />
-					</Col>
-				</Row>
-			</Container>
-		</>
-	);
-};
+const ToggleBtn = styled.button`
+	margin-bottom: 35px;
+`;
+export default class App extends Component {
+	state = {
+		showRandomChar: true,
+		error: false
+	}
 
-export default App;
+	componentDidCatch() {
+		this.setState({error: true});
+	}
+
+	hideToggle = () => {
+		this.setState({showRandomChar: !this.state.showRandomChar});
+	}
+
+	render() {
+		const {showRandomChar} = this.state;
+
+		if (this.state.error) {
+			return <ErrorMsg />
+		}
+
+		return (
+			<>
+				<Container>
+					<Header />
+					<Row>
+						<Col className='text-center' lg={{ size: 5, offset: 4 }}>
+							{showRandomChar ? <RandomChar /> : null}
+							<ToggleBtn className='btn btn-secondary' type='button' onClick={this.hideToggle}>
+								Click me to toggle random character
+							</ToggleBtn>
+						</Col>
+					</Row>
+					<CharacterPage />			
+				</Container>
+			</>
+		);
+	}
+}

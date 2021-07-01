@@ -21,21 +21,24 @@ const RandomBlock = styled.div`
 `;
 
 export default class RandomChar extends Component {
-	constructor(props) {
-		super(props);
+	gotService = new GotService();
 
-		this.state = {
-			char: {},
-			loading: true
-		};
-		this.onCharLoaded = this.onCharLoaded.bind(this);
-		this.onError = this.onError.bind(this);
-		
-		this.gotService = new GotService();
+	state = {
+		char: {},
+		loading: true,
+		error: false
+	}
+	
+	componentDidMount() {
 		this.updateChar();
+		this.timerId = setInterval(this.updateChar, 4000);
+	}
+	
+	componentWillUnmount() {
+		clearInterval(this.timerId);
 	}
 
-	onCharLoaded(char) {
+	onCharLoaded = (char) => {
 		this.setState({
 			char,
 			loading: false,
@@ -43,14 +46,14 @@ export default class RandomChar extends Component {
 		});
 	}
 
-	onError() {
+	onError = () => {
 		this.setState({
 			error: true,
 			loading: false
 		});
 	}
 
-	updateChar() {
+	updateChar = () => {
 		const id = Math.floor(Math.random() * 150 + 25); // 25 - 150
 
 		this.gotService.getChar(id)
@@ -61,7 +64,7 @@ export default class RandomChar extends Component {
 	render() {
 		const { char, loading, error } = this.state;
 
-		const errorMessage = error ? <ErrorMsg/> : null;
+		const errorMessage = error ? <ErrorMsg /> : null;
 		const content = loading ? <Spinner /> : <View char={char} />;
 
 		return (
