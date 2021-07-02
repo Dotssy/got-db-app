@@ -43,7 +43,7 @@ export default class App extends Component {
 							</ToggleBtn>
 						</Col>
 					</Row>
-					<CharacterPage />			
+					<CharacterPage />
 				</Container>
 			</>
 		);

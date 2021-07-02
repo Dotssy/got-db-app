@@ -14,7 +14,7 @@ export default class GotService {
 	}
 	
 	async getAllChars() {
-		const chars = await this.getResourse(`/characters?page=5&pageSize=10`);
+		const chars = await this.getResourse(`/characters?page=7&pageSize=10`);
 		return chars.map(this._transformCharacter);
 	}
 
@@ -43,47 +43,45 @@ export default class GotService {
 		return this._transformBook(book);
 	}
 
-	_transformCharacter(char) {
-		const born = char.born ? char.born : '[N/A]',
-			died = char.died ? char.died : '[N/A]',
-			culture = char.culture ? char.culture : '[N/A]';
+	_isSet = (data) => {
+		return data ? data : '[N/A]';
+	}
 
+	_extractId = (data) => {
+		const regex = /\/(\d+)$/;
+		return +data.url.match(regex)[1];
+	}
+
+	_transformCharacter = (char) => {
 		return {
-			name: char.name,
-			gender: char.gender,
-			born,
-			died,
-			culture
+			name: this._isSet(char.name),
+			gender: this._isSet(char.gender),
+			born: this._isSet(char.born),
+			died: this._isSet(char.died),
+			culture: this._isSet(char.culture),
+			id: this._extractId(char)
 		};	
 	}
 
-	_transformHouse(house) {
-		const region = house.region ? house.region : '[N/A]',
-			words = house.words ? house.words : '[N/A]',
-			titles = house.titles ? house.titles : '[N/A]',
-			overlord = house.overlord ? house.overlord : '[N/A]',
-			ancestralWeapons = house.ancestralWeapons ? house.ancestralWeapons : '[N/A]';
-
+	_transformHouse = (house) => {
 		return {
-			name: house.name,
-			region,
-			words,
-			titles,
-			overlord,
-			ancestralWeapons 
+			name: this._isSet(house.name),
+			region: this._isSet(house.region),
+			words: this._isSet(house.words),
+			titles: this._isSet(house.titles),
+			overlord: this._isSet(house.overlord),
+			ancestralWeapons: this._isSet(house.ancestralWeapons),
+			id: this._extractId(house) 
 		};	
 	}
 
-	_transformBook(book) {
-		const numberOfPages = book.numberOfPages ? book.numberOfPages : '[N/A]',
-			publiser = book.publiser ? book.publiser : '[N/A]',
-			released = book.released ? book.released : '[N/A]';
-
+	_transformBook = (book) => {
 		return {
-			name: book.name,
-			numberOfPages,
-			publiser,
-			released
+			name: this._isSet(book.name),
+			numberOfPages: this._isSet(book.numberOfPages),
+			publiser: this._isSet(book.publiser),
+			released: this._isSet(book.released),
+			id: this._extractId(book)
 		};	
 	}
 }

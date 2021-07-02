@@ -7,8 +7,20 @@ import Spinner from '../spinner/spinner';
 
 const CharList = styled.ul`
 	opacity: .8;
+	width: 100%;
 	li {
 		cursor: pointer;
+	}
+`;
+
+const ListBlock = styled.div`
+	opacity: .8;
+	background-color: #fff;
+	height: 100%;
+	display: flex;
+	border-radius: 0.25rem;
+	div {
+		margin: auto;
 	}
 `;
 export default class ItemList extends Component {
@@ -16,47 +28,55 @@ export default class ItemList extends Component {
 
 	state = {
 		charList: null
-	};
+	}
 
 	componentDidMount() {
 		this.gotService.getAllChars()
 			.then((charList) => {
 				this.setState({
-					charList
+					charList,
 				})
-			})
+			});
 	}
 
-	renderItems = (charList) => {
-		return charList.map((char, i) => {
+	renderList = (charList) => {
+		const items = charList.map((char) => {
+			const {name, id} = char;
 			return (
-				//TODO Сделать генерацию айдишников
-				//TODO Сделать чё то с нумерацией страниц
-				<li 
-					key={i} 
+				<li
+					key={id}
 					className='list-group-item'
-					onClick={() => this.props.onCharSelect(41 + i)}>
-					{char.name}
+					onClick={() => this.props.onCharSelect(id)}>
+					{name}
 				</li>
 			);
 		});
+
+		return (
+			<CharList className='item-list list-group'>
+				{items}
+			</CharList>
+		);
 	}
 
 	render() {
 		const {charList} = this.state;
-		//TODO Запилить реализацию спиннера как в рандом чар
-		if (!charList) return <Spinner />
+		let content;
 
-		const items = this.renderItems(charList);
-		
+		if (!charList) {
+			content = <Spinner />;
+		} else {
+			content = this.renderList(charList);
+		}
+
 		return (
-			<CharList className='item-list list-group'>
-				{items}				
-			</CharList>
+			<ListBlock>
+				{content}
+			</ListBlock>
 		);
 	}
 }
 
 ItemList.propTypes = {
-  onCharSelect: PropTypes.func
+	onCharSelect: PropTypes.func
 }

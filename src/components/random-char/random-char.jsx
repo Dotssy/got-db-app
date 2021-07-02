@@ -63,7 +63,6 @@ export default class RandomChar extends Component {
 
 	render() {
 		const { char, loading, error } = this.state;
-
 		const errorMessage = error ? <ErrorMsg /> : null;
 		const content = loading ? <Spinner /> : <View char={char} />;
 

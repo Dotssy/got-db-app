@@ -1,8 +1,9 @@
 import PropTypes from "prop-types";
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 
 import GotService from '../../service/got-service';
+import Spinner from '../spinner/spinner';
 
 const DetailsBlock = styled.div`
 	background-color: #fff;
@@ -42,46 +43,45 @@ const CharSelectMsg = styled.div`
 
 export default class CharDetails extends Component {
 	gotService = new GotService();
-	
+
 	state = {
-		char: null
+		char: null,
+		loading: false
 	}
 
 	componentDidMount() {
 		this.updateChar();
 	}
 
-	componentDidUpdate(prevProps,) {
+	componentDidUpdate(prevProps) {
 		if (this.props.charId !== prevProps.charId) {
 			this.updateChar();
+
+			this.setState({
+				loading: true
+			});
 		}
 	}
 
 	updateChar = () => {
-		const {charId} = this.props;
+		const { charId } = this.props;
 
 		if (!charId) return;
 
 		this.gotService.getChar(charId)
 			.then(char => {
-				this.setState({char});
+				this.setState({
+					char,
+					loading: false
+				});
 			});
 	}
 
-	render() {
-
-		if (!this.state.char) {
-			return (
-				<CharSelectMsg>
-					<span>Please select a character</span>
-				</CharSelectMsg>
-			);
-		}
-
-		const {name, gender, born, died, culture} = this.state.char;
+	makeDetailsList = () => {
+		const { name, gender, born, died, culture } = this.state.char;
 
 		return (
-			<DetailsBlock className='rounded'>
+			<>
 				<h4>{name}</h4>
 				<ul className='list-group list-group-flush'>
 					<li className='list-group-item d-flex justify-content-between'>
@@ -101,11 +101,35 @@ export default class CharDetails extends Component {
 						<span>{culture}</span>
 					</li>
 				</ul>
+			</>
+		);
+	}
+
+	render() {
+		if (!this.state.char) {
+			return (
+				<CharSelectMsg>
+					<span>Please select a character</span>
+				</CharSelectMsg>
+			);
+		}
+
+		let content;
+
+		if (this.state.loading) {
+			content = <Spinner />
+		} else {
+			content = this.makeDetailsList();
+		}
+
+		return (
+			<DetailsBlock className='rounded'>
+				{content}
 			</DetailsBlock>
 		);
 	}
 }
 
 CharDetails.propTypes = {
-  charId: PropTypes.number
+	charId: PropTypes.number
 }
