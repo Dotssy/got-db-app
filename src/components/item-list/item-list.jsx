@@ -1,8 +1,7 @@
 import PropTypes from "prop-types";
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 
-import GotService from '../../service/got-service';
 import Spinner from '../spinner/spinner';
 
 const CharList = styled.ul`
@@ -24,30 +23,32 @@ const ListBlock = styled.div`
 	}
 `;
 export default class ItemList extends Component {
-	gotService = new GotService();
-
 	state = {
-		charList: null
+		itemList: null
 	}
 
 	componentDidMount() {
-		this.gotService.getAllChars()
-			.then((charList) => {
+		const { getData } = this.props;
+
+		getData()
+			.then((itemList) => {
 				this.setState({
-					charList,
+					itemList,
 				})
 			});
 	}
 
-	renderList = (charList) => {
-		const items = charList.map((char) => {
-			const {name, id} = char;
+	renderList = (itemList) => {
+		const items = itemList.map((item) => {
+			const { id } = item;
+			const label = this.props.renderItem(item);
+
 			return (
 				<li
 					key={id}
 					className='list-group-item'
-					onClick={() => this.props.onCharSelect(id)}>
-					{name}
+					onClick={() => this.props.onItemSelect(id)}>
+					{label}
 				</li>
 			);
 		});
@@ -60,13 +61,13 @@ export default class ItemList extends Component {
 	}
 
 	render() {
-		const {charList} = this.state;
+		const { itemList } = this.state;
 		let content;
 
-		if (!charList) {
+		if (!itemList) {
 			content = <Spinner />;
 		} else {
-			content = this.renderList(charList);
+			content = this.renderList(itemList);
 		}
 
 		return (
@@ -78,5 +79,7 @@ export default class ItemList extends Component {
 }
 
 ItemList.propTypes = {
-	onCharSelect: PropTypes.func
+  getData: PropTypes.func,
+  onItemSelect: PropTypes.func,
+  renderItem: PropTypes.func
 }
