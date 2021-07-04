@@ -6,11 +6,11 @@ import ItemList from '../../item-list/item-list';
 import ErrorMsg from '../../error-msg/error-msg';
 import RowBlock from '../../row-block/row-block';
 
-export default class CharacterPage extends Component {
+export default class BooksPage extends Component {
 	gotService = new GotService();
 
 	state = {
-		selectedChar: null,
+		selectedBook: null,
 		error: false
 	}
 
@@ -20,7 +20,7 @@ export default class CharacterPage extends Component {
 
 	onItemSelected = (id) => {
 		this.setState({
-			selectedChar: id
+			selectedBook: id
 		});
 	}
 
@@ -33,19 +33,18 @@ export default class CharacterPage extends Component {
 		const itemList = (
 			<ItemList
 				onItemSelect={this.onItemSelected}
-				getData={this.gotService.getAllChars}
-				renderItem={({ name, gender }) => `${name} (${gender})`} />
+				getData={this.gotService.getAllBooks}
+				renderItem={({ name }) => `${name}`} />
 		)
 
 		const charDetails = (
 			<ItemDetails 
-				itemId={this.state.selectedChar} 
-				itemType='character'
-				getData={this.gotService.getChar}>
-					<Field field='gender' label='Gender' />
-					<Field field='born' label='Born' />
-					<Field field='died' label='Died' />
-					<Field field='culture' label='Culture' />
+				itemId={this.state.selectedBook} 
+				itemType='book'
+				getData={this.gotService.getBook}>
+					<Field field='numberOfPages' label='Number of pages' />
+					<Field field='released' label='Released' />
+					<Field field='publiser' label='Publiser' />
 			</ItemDetails>
 		)
 

@@ -22,6 +22,7 @@ const ListBlock = styled.div`
 		margin: auto;
 	}
 `;
+
 export default class ItemList extends Component {
 	state = {
 		itemList: null

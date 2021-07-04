@@ -5,10 +5,10 @@ import styled from 'styled-components';
 import Header from '../header/header';
 import RandomChar from '../random-char/random-char';
 import CharacterPage from '../pages/character-page/character-page';
+import BooksPage from '../pages/books-page/books-page';
+import HousesPage from '../pages/houses-page/houses-page';
 import ErrorMsg from '../error-msg/error-msg';
 
-// import CharDetails from '../char-details/char-details';
-// import ItemList from '../item-list/item-list';
 import GotService from '../../service/got-service';
 
 const ToggleBtn = styled.button`
@@ -50,28 +50,8 @@ export default class App extends Component {
 						</Col>
 					</Row>
 					<CharacterPage />
-					{/* <Row>
-						<Col md='6'>
-							<ItemList 
-								onItemSelect={this.onItemSelected}
-								getData={this.gotService.getAllBooks}
-								renderItem={(item) => item.name} />
-						</Col>
-						<Col md='6'>
-							<CharDetails charId={this.state.selectedChar} />
-						</Col>
-					</Row>
-					<Row>
-						<Col md='6'>
-							<ItemList 
-								onItemSelect={this.onItemSelected}
-								getData={this.gotService.getAllHouses}
-								renderItem={(item) => item.name} />
-						</Col>
-						<Col md='6'>
-							<CharDetails charId={this.state.selectedChar} />
-						</Col>
-					</Row> */}
+					<BooksPage />
+					<HousesPage />
 				</Container>
 			</>
 		);

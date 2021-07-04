@@ -2,7 +2,6 @@ import PropTypes from "prop-types";
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
-import GotService from '../../service/got-service';
 import Spinner from '../spinner/spinner';
 
 const DetailsBlock = styled.div`
@@ -24,7 +23,7 @@ const DetailsBlock = styled.div`
 	}
 `;
 
-const CharSelectMsg = styled.div`
+const ItemSelectMsg = styled.div`
 	display: flex;
 	background: #fff;
 	opacity: .8;
@@ -41,34 +40,36 @@ const CharSelectMsg = styled.div`
 	}
 `;
 
-const Field = ({ char, field, label }) => {
+const Field = ({ item, field, label }) => {
 	return (
 		<li className='list-group-item d-flex justify-content-between'>
 			<span className='term'>{`${label}:`}</span>
-			<span>{char[field]}</span>
+			<span>{item[field]}</span>
 		</li>
 	)
 };
 
+Field.propTypes = {
+	field: PropTypes.string,
+	item: PropTypes.object,
+	label: PropTypes.string
+}
+
 export { Field };
 
-// TODO: Рефакторнуть компонент CharDetails на один лад с ItemList и отвязать от привязки к персонажу.
-// TODO: Создать страницы по отображению книг и домов.
-export default class CharDetails extends Component {
-	gotService = new GotService();
-
+export default class ItemDetails extends Component {
 	state = {
-		char: null,
+		item: null,
 		loading: false
 	}
 
 	componentDidMount() {
-		this.updateChar();
+		this.updateItem();
 	}
 
 	componentDidUpdate(prevProps) {
-		if (this.props.charId !== prevProps.charId) {
-			this.updateChar();
+		if (this.props.itemId !== prevProps.itemId) {
+			this.updateItem();
 
 			this.setState({
 				loading: true
@@ -76,23 +77,25 @@ export default class CharDetails extends Component {
 		}
 	}
 
-	updateChar = () => {
-		const { charId } = this.props;
+	updateItem = () => {
+		const { itemId } = this.props;
 
-		if (!charId) return;
+		if (!itemId) return;
 
-		this.gotService.getChar(charId)
-			.then(char => {
+		const { getData } = this.props;
+
+		getData(itemId)
+			.then(item => {
 				this.setState({
-					char,
+					item,
 					loading: false
 				});
 			});
 	}
 
 	makeDetailsList = () => {
-		const { char } = this.state;
-		const { name } = char;
+		const { item } = this.state;
+		const { name } = item;
 
 		return (
 			<>
@@ -100,7 +103,7 @@ export default class CharDetails extends Component {
 				<ul className='list-group list-group-flush'>
 					{
 						React.Children.map(this.props.children, (child) => {
-							return React.cloneElement(child, {char})							
+							return React.cloneElement(child, { item })
 						})
 					}
 				</ul>
@@ -109,11 +112,11 @@ export default class CharDetails extends Component {
 	}
 
 	render() {
-		if (!this.state.char) {
+		if (!this.state.item) {
 			return (
-				<CharSelectMsg>
-					<span>Please select a character</span>
-				</CharSelectMsg>
+				<ItemSelectMsg>
+					<span>Please select a {this.props.itemType}</span>
+				</ItemSelectMsg>
 			);
 		}
 
@@ -133,6 +136,8 @@ export default class CharDetails extends Component {
 	}
 }
 
-CharDetails.propTypes = {
-	charId: PropTypes.number
+ItemDetails.propTypes = {
+	itemId: PropTypes.number,
+	itemType: PropTypes.string,
+	getData: PropTypes.func.isRequired
 }
