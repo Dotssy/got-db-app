@@ -78,11 +78,9 @@ export default class ItemDetails extends Component {
 	}
 
 	updateItem = () => {
-		const { itemId } = this.props;
+		const { itemId, getData } = this.props;
 
 		if (!itemId) return;
-
-		const { getData } = this.props;
 
 		getData(itemId)
 			.then(item => {
@@ -112,27 +110,23 @@ export default class ItemDetails extends Component {
 	}
 
 	render() {
-		if (!this.state.item) {
+		const { item, loading } = this.state;
+
+		if (!item) {
 			return (
 				<ItemSelectMsg>
 					<span>Please select a {this.props.itemType}</span>
 				</ItemSelectMsg>
-			);
+			)
 		}
 
-		let content;
-
-		if (this.state.loading) {
-			content = <Spinner />
-		} else {
-			content = this.makeDetailsList();
-		}
+		const content = loading ? <Spinner /> : this.makeDetailsList();
 
 		return (
 			<DetailsBlock className='rounded'>
 				{content}
 			</DetailsBlock>
-		);
+		)
 	}
 }
 
