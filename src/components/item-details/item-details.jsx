@@ -63,6 +63,12 @@ export default class ItemDetails extends Component {
 		loading: false
 	}
 
+	static propTypes = {
+		itemId: PropTypes.number,
+		itemType: PropTypes.string,
+		getData: PropTypes.func.isRequired
+	}
+
 	componentDidMount() {
 		this.updateItem();
 	}
@@ -128,10 +134,4 @@ export default class ItemDetails extends Component {
 			</DetailsBlock>
 		)
 	}
-}
-
-ItemDetails.propTypes = {
-	itemId: PropTypes.number,
-	itemType: PropTypes.string,
-	getData: PropTypes.func.isRequired
 }

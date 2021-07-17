@@ -28,6 +28,16 @@ export default class ItemList extends Component {
 		itemList: null
 	}
 
+	static defaultProps = {
+		onItemSelect: () => {}
+	}
+
+	static propTypes = {
+		getData: PropTypes.func,
+		onItemSelect: PropTypes.func,
+		renderItem: PropTypes.func
+	}
+
 	componentDidMount() {
 		const { getData } = this.props;
 
@@ -77,10 +87,4 @@ export default class ItemList extends Component {
 			</ListBlock>
 		);
 	}
-}
-
-ItemList.propTypes = {
-  getData: PropTypes.func,
-  onItemSelect: PropTypes.func,
-  renderItem: PropTypes.func
 }

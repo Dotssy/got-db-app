@@ -35,7 +35,7 @@ export default class CharacterPage extends Component {
 				onItemSelect={this.onItemSelected}
 				getData={this.gotService.getAllChars}
 				renderItem={({ name, gender }) => `${name} (${gender})`} />
-		)
+		);
 
 		const charDetails = (
 			<ItemDetails 
@@ -47,10 +47,10 @@ export default class CharacterPage extends Component {
 					<Field field='died' label='Died' />
 					<Field field='culture' label='Culture' />
 			</ItemDetails>
-		)
+		);
 
 		return (
 			<RowBlock left={itemList} right={charDetails} />
-		)
+		);
 	}
 }

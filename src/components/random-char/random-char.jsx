@@ -28,12 +28,21 @@ export default class RandomChar extends Component {
 		loading: true,
 		error: false
 	}
-	
-	componentDidMount() {
-		this.updateChar();
-		this.timerId = setInterval(this.updateChar, 4000);
+
+	static defaultProps = {
+		interval: 10000
 	}
-	
+
+	static propTypes = {
+		interval: PropTypes.number
+	}
+
+	componentDidMount() {
+		const interval = this.props.interval;
+		this.updateChar();
+		this.timerId = setInterval(this.updateChar, interval);
+	}
+
 	componentWillUnmount() {
 		clearInterval(this.timerId);
 	}
@@ -74,8 +83,8 @@ export default class RandomChar extends Component {
 	}
 }
 
-const View = ({char}) => {
-	const {name, gender, born, died, culture} = char;
+const View = ({ char }) => {
+	const { name, gender, born, died, culture } = char;
 
 	return (
 		<>
@@ -103,11 +112,11 @@ const View = ({char}) => {
 };
 
 View.propTypes = {
-  char: PropTypes.shape({
-    born: PropTypes.string,
-    culture: PropTypes.string,
-    died: PropTypes.string,
-    gender: PropTypes.string,
-    name: PropTypes.string
-  })
+	char: PropTypes.shape({
+		born: PropTypes.string,
+		culture: PropTypes.string,
+		died: PropTypes.string,
+		gender: PropTypes.string,
+		name: PropTypes.string
+	})
 }
