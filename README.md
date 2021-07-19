@@ -1,5 +1,5 @@
 # Game of Thrones DB
-Game of thrones DB application made useing An API of Ice And Fire
+Game of thrones DB application made using An API of Ice And Fire
 
 # Usage
 ```
