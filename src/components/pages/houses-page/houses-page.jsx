@@ -38,14 +38,14 @@ export default class BooksPage extends Component {
 		)
 
 		const charDetails = (
-			<ItemDetails 
-				itemId={this.state.selectedHouse} 
-				itemType='book'
+			<ItemDetails
+				itemId={this.state.selectedHouse}
+				itemType='house'
 				getData={this.gotService.getHouse}>
-					<Field field='overlord' label='Overlord' />
-					<Field field='heir' label='Heir' />
-					<Field field='words' label='Words' />
-					<Field field='founded' label='Founded' />
+				<Field field='region' label='Region' />
+				<Field field='words' label='Words' />
+				<Field field='titles' label='Titles' />
+				<Field field='ancestralWeapons' label='Ancestral Weapons' />
 			</ItemDetails>
 		)
 

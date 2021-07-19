@@ -12,7 +12,7 @@ export default class BooksItem extends Component {
 				itemType='book'
 				getData={this.gotService.getBook}>
 					<Field field='numberOfPages' label='Number of pages' />
-					<Field field='publiser' label='Publiser' />
+					<Field field='publisher' label='Publisher' />
 					<Field field='released' label='Released' />
 			</ItemDetails>
 		)

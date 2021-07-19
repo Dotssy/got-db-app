@@ -1,5 +1,11 @@
 .app {
-	background: blue url('./img/got.jpeg') center center no-repeat;
+	background: #000 url('./img/got.jpeg') center center no-repeat;
 	background-size: cover;
 	height: 100vh;	
+}
+
+@media screen and (max-width: 767px) {
+	.app {
+		height: 100%;
+	}
 }

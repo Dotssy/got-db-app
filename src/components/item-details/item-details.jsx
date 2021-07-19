@@ -117,11 +117,12 @@ export default class ItemDetails extends Component {
 
 	render() {
 		const { item, loading } = this.state;
+		const { itemType } = this.props;
 
 		if (!item) {
 			return (
 				<ItemSelectMsg>
-					<span>Please select a {this.props.itemType}</span>
+					<span>Please select a {itemType}</span>
 				</ItemSelectMsg>
 			)
 		}
